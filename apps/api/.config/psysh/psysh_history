@@ -1,0 +1,4 @@
+Schema::dropIfExists('products');
+exit
+Schema::dropIfExists('customers');
+exit
