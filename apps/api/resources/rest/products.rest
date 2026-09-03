@@ -1,0 +1,33 @@
+@baseUri = http://localhost:8182/api
+
+### Listar todas os produtos
+GET {{baseUri}}/products HTTP/1.1
+Content-Type: application/json
+
+### Criar um novo produto
+POST {{baseUri}}/products HTTP/1.1
+Content-Type: application/json
+
+{
+  "category_id": 1,
+  "name": "produto novo",
+  "description": "Produto criado via API/REST",
+  "price": "99.90"
+}
+
+### Buscar um produto por ID
+GET {{baseUri}}/products/115 HTTP/1.1
+Content-Type: application/json
+
+### Atualizar um produto existente
+PUT {{baseUri}}/products/115 HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "produto novo",
+  "description": "Produto ATUALIZADO via API/REST"
+}
+
+### Deletar um produto
+DELETE {{baseUri}}/products/115 HTTP/1.1
+Content-Type: application/json

@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\CategoryStoreRequest;
+use App\Http\Requests\CategoryUpdateRequest;
 
 class CategoryController extends Controller
 {
@@ -18,16 +19,22 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryStoreRequest $request)
     {
-        $category = new Category();
-        $category->name = $request->name;
-        $category->description = $request->description;
+        // $category = new Category();
+        // $category->name = $request->name;
+        // $category->description = $request->description;
 
 
-        $category->save();
+        // $category->save();
+
+
+        $data = $request->validated();
+
+        $category = Category::create($data);
 
         return $category;
+
     }
 
     /**
@@ -51,7 +58,7 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Category $category, Request $request)
+   public function update(Category $category, CategoryUpdateRequest $request)
     {
          /* if(!$category){
             //404 not found
@@ -59,11 +66,9 @@ class CategoryController extends Controller
                 'message'=> 'categoria não encontrada.',
             ],404);
         } */
+        $data = $request->validated();
+        $category->update($data);
 
-        $category->name = $request->name ?? $category->name;
-        $category->description = $request->description ?? $category->description;
-
-        $category->save();
 
         return $category;
     }
@@ -72,24 +77,19 @@ class CategoryController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Category $category)
-    {
+{
+    $hasProduct = \App\Models\Product::where('category_id', $category->id)->exists();
 
-        $hasProduct = \App\Models\Product::where('category_id', $category->id)->exists();
+    if ($hasProduct) {
 
-        if ($hasProduct){
-            //422 unprocessable Entitiy
-            return response()->json([
-                'message' => 'Categoria com produtos relacionados',
-            ],404);
-
-            $category->delete();
-
-            //204 No content
-
-            return response()->json([
-                'message' => 'categoria excluida',
-            ],204);
-        }
-
+        return response()->json([
+            'message' => 'Categoria com produtos relacionados',
+        ], 422);
     }
+
+    $category->delete();
+
+
+    return response()->json(null, 204);
+}
 }
