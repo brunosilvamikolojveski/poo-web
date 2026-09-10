@@ -1,0 +1,44 @@
+@baseUri = http://localhost:8182/api
+
+### Listar todas as Reviews
+GET {{baseUri}}/reviews HTTP/1.1
+Content-Type: application/json
+
+### Buscar uma review por ID
+GET {{baseUri}}/reviews/1 HTTP/1.1
+Content-Type: application/json
+
+### Criar uma review válida
+POST {{baseUri}}/reviews HTTP/1.1
+Content-Type: application/json
+
+{
+  "product_id": 1,
+  "customer_id": 1,
+  "rating": 5,
+  "comment": "Review criada via API/REST"
+}
+
+### Criar uma review inválida
+POST {{baseUri}}/reviews HTTP/1.1
+Content-Type: application/json
+
+{
+  "product_id": 10,
+  "customer_id": 4,
+  "rating": 7,
+  "comment" : "Review inválida via API/REST"
+}
+
+### Atualizar uma review
+PUT {{baseUri}}/reviews/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "rating": 3,
+  "comment": "Review ATUALIZADA via API/REST"
+}
+
+### Deletar uma review
+DELETE {{baseUri}}/reviews/2 HTTP/1.1
+Content-Type: application/json
